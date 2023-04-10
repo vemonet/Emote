@@ -1,7 +1,7 @@
 import os
 import gi
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk, Gdk
 from emote import config
 
@@ -19,8 +19,8 @@ def load_css():
     else:
         css_provider.load_from_path("static/style.css")
 
-    screen = Gdk.Screen.get_default()
-    styleContext = Gtk.StyleContext()
-    styleContext.add_provider_for_screen(
-        screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER
-    )
+    # screen = Gdk.Display.get_default()
+    # styleContext = Gtk.StyleContext()
+    # styleContext.add_provider_for_display(
+    #     screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER
+    # )

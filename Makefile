@@ -18,7 +18,6 @@ package:
 
 clean:
 	snapcraft clean
-	rm -r .flatpak-builder build/
 
 update-emojis:
 	wget -O static/emojis.csv https://raw.githubusercontent.com/hfg-gmuend/openmoji/master/data/openmoji.csv
@@ -44,7 +43,7 @@ flatpak-validate:
 	flatpak run org.freedesktop.appstream-glib validate flatpak/com.tomjwatson.Emote.metainfo.xml
 
 flatpak-clean:
-	rm -r .flatpak-builder build/
+	sudo rm -rf .flatpak-builder build/
 	flatpak remove com.tomjwatson.Emote -y
 
 flathub:

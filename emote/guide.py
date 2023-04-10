@@ -1,6 +1,6 @@
 import gi
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk
 from emote import user_data, config
 
@@ -12,12 +12,12 @@ class Guide(Gtk.Dialog):
     def __init__(self):
         Gtk.Dialog.__init__(
             self,
-            title="Emote Guide",
-            window_position=Gtk.WindowPosition.CENTER,
+            # title_widget=Gtk.Label(label="Emote Guide"),
+            # window_position=Gtk.WindowPosition.CENTER,
             resizable=False,
         )
 
-        header = Gtk.HeaderBar(title="Guide", show_close_button=True)
+        header = Gtk.HeaderBar(title_widget=Gtk.Label(label="Emote Guide"))
         self.set_titlebar(header)
 
         box = self.get_content_area()
@@ -29,16 +29,20 @@ class Guide(Gtk.Dialog):
         launching.set_markup(
             '<span size="large" font_weight="bold" underline="single">Launching</span>'
         )
-        launching.set_alignment(0, 0.5)
-        vbox.pack_start(launching, True, True, GRID_SIZE)
+        # launching.set_alignment(0, 0.5)
+        launching.set_xalign(0)
+        launching.set_yalign(0.5)
+        vbox.append(launching)
 
         background = Gtk.Label()
         background.set_markup(
             "Emote runs in the background and automatically starts when you log in."
         )
-        background.set_line_wrap(True)
-        background.set_alignment(0, 0.5)
-        vbox.pack_start(background, True, True, GRID_SIZE)
+        background.set_wrap(True)
+        # background.set_alignment(0, 0.5)
+        background.set_xalign(0)
+        background.set_yalign(0.5)
+        vbox.append(background)
 
         if config.is_wayland:
             opening = Gtk.Label()
@@ -46,25 +50,28 @@ class Guide(Gtk.Dialog):
                 "The emoji picker can be opened by clicking the app icon again, or by\n"
                 'setting a custom app shortcut. See <a href="https://github.com/tom-james-watson/Emote/wiki/Hotkey-In-Wayland" title="See Wayland shortcut instructions">the wiki</a> for details.'
             )
-            opening.set_line_wrap(True)
-            opening.set_alignment(0, 0.5)
-            vbox.pack_start(opening, True, True, GRID_SIZE)
+            opening.set_wrap(True)
+            opening.set_xalign(0)
+            opening.set_yalign(0.5)
+            vbox.append(opening)
         else:
             opening = Gtk.Label()
             opening.set_markup(
                 "The emoji picker can be opened with either the keyboard shortcut or by\n"
                 "clicking the app icon again."
             )
-            opening.set_line_wrap(True)
-            opening.set_alignment(0, 0.5)
-            vbox.pack_start(opening, True, True, GRID_SIZE)
+            opening.set_wrap(True)
+            opening.set_xalign(0)
+            opening.set_yalign(0.5)
+            vbox.append(opening)
 
         usage = Gtk.Label()
         usage.set_markup(
             '<span size="large" font_weight="bold" underline="single">Usage</span>'
         )
-        usage.set_alignment(0, 0.5)
-        vbox.pack_start(usage, True, True, GRID_SIZE)
+        usage.set_xalign(0)
+        usage.set_yalign(0.5)
+        vbox.append(usage)
 
         if config.is_wayland:
             copying = Gtk.Label()
@@ -72,9 +79,10 @@ class Guide(Gtk.Dialog):
                 "Select an emoji to have it copied to your clipboard. You can then paste the\n"
                 "emoji wherever you need."
             )
-            copying.set_line_wrap(True)
-            copying.set_alignment(0, 0.5)
-            vbox.pack_start(copying, True, True, GRID_SIZE)
+            copying.set_wrap(True)
+            copying.set_xalign(0)
+            copying.set_yalign(0.5)
+            vbox.append(copying)
         else:
             copying = Gtk.Label()
             copying.set_markup(
@@ -82,21 +90,22 @@ class Guide(Gtk.Dialog):
                 "emoji is also copied to the clipboard so you can then paste the emoji\n"
                 "wherever you need."
             )
-            copying.set_line_wrap(True)
-            copying.set_alignment(0, 0.5)
-            vbox.pack_start(copying, True, True, GRID_SIZE)
+            copying.set_wrap(True)
+            copying.set_xalign(0)
+            copying.set_yalign(0.5)
+            vbox.append(copying)
 
         multiple = Gtk.Label()
         multiple.set_markup(
             "You can select multiple emojis by selecting them with shift left click\n"
             "or with right click."
         )
-        multiple.set_line_wrap(True)
-        multiple.set_alignment(0, 0.5)
-        vbox.pack_start(multiple, True, True, GRID_SIZE)
+        multiple.set_wrap(True)
+        multiple.set_xalign(0)
+        multiple.set_yalign(0.5)
+        vbox.append(multiple)
 
-        hbox.pack_start(vbox, True, True, GRID_SIZE)
-        box.pack_start(hbox, True, True, GRID_SIZE)
+        hbox.append(vbox)
+        box.append(hbox)
 
-        self.show_all()
         self.present()

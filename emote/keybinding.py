@@ -6,7 +6,7 @@ https://github.com/linuxmint/cinnamon/blob/master/files/usr/share/cinnamon/cinna
 """
 import gi
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk, Gdk, GObject
 
 
@@ -366,7 +366,6 @@ class CellRendererKeybinding(Gtk.CellRendererText):
                     + " (Windows key) at the same time.\n"
                 )
                 dialog.set_markup(msg % (accel_label))
-                dialog.show_all()
                 dialog.run()
                 dialog.destroy()
                 return True

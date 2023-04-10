@@ -276,6 +276,7 @@ def init():
                 "skintone": row["skintone_combination"] == "single"
                 and shortcode not in SKINTONE_SEQUENCE_BLOCKLIST,
             }
+            # TODO: remove SKINTONE_SEQUENCE_BLOCKLIST not needed on flatpak
             emojis_by_category[category].append(emoji)
             all_emojis.append(emoji)
 

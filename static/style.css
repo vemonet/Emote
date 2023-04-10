@@ -14,11 +14,16 @@
   padding-right: 7px;
 }
 
+/* https://docs.gtk.org/gtk4/migrating-3to4.html#do-not-use-widget-style-properties */
 #emoji_button:hover label {
+  border-width: 1px;
+  border-style: solid;
+}
+/* #emoji_button:hover label {
   -gtk-icon-shadow: none;
   -gtk-icon-effect: none;
   text-shadow: none;
-}
+} */
 
 #category_label {
   font-weight: bold;
@@ -46,3 +51,5 @@ frame border {
   font-weight: bold;
   font-size: 16px;
 }
+
+/* -gtk-icon-effect */

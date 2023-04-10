@@ -1,6 +1,6 @@
 import gi
 
-gi.require_version("Gtk", "3.0")
+gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk
 from emote import user_data
 
@@ -12,21 +12,20 @@ class Settings(Gtk.Dialog):
     def __init__(self, update_theme):
         Gtk.Dialog.__init__(
             self,
-            title="Emote Preferences",
-            window_position=Gtk.WindowPosition.CENTER,
+            # window_position=Gtk.WindowPosition.CENTER,
             resizable=False,
         )
 
         self.update_theme = update_theme
 
-        header = Gtk.HeaderBar(title="Preferences", show_close_button=True)
+        header = Gtk.HeaderBar(title_widget=Gtk.Label(label="Preferences"))
         self.set_titlebar(header)
 
         box = self.get_content_area()
 
         settings_grid = Gtk.Grid(
             orientation=Gtk.Orientation.VERTICAL,
-            margin=GRID_SIZE,
+            # margin=GRID_SIZE,
             row_spacing=GRID_SIZE,
         )
         settings_grid.set_row_homogeneous(False)
@@ -34,8 +33,9 @@ class Settings(Gtk.Dialog):
 
         row = 1
 
-        theme_label = Gtk.Label("Theme")
-        theme_label.set_alignment(0, 0.5)
+        theme_label = Gtk.Label(title_widget=Gtk.Label(label="Theme"))
+        theme_label.set_xalign(0)
+        theme_label.set_yalign(0.5)
         settings_grid.attach(theme_label, 1, row, 1, 1)
 
         theme_combo = Gtk.ComboBoxText()
@@ -47,9 +47,8 @@ class Settings(Gtk.Dialog):
         settings_grid.attach(theme_combo, 2, row, 1, 1)
         row += 1
 
-        box.pack_start(settings_grid, True, True, GRID_SIZE)
+        box.append(settings_grid)
 
-        self.show_all()
         self.present()
 
     def on_theme_combo_changed(self, combo):

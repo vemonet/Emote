@@ -1,5 +1,8 @@
+import dbus
+import os
 import sys
 import gi
+import shutil
 import manimpango
 from setproctitle import setproctitle
 
@@ -8,14 +11,6 @@ gi.require_version("Keybinder", "3.0")
 from gi.repository import Gtk, Keybinder
 
 from emote import picker, css, emojis, user_data, config
-
-# Register updated emoji font
-if config.is_snap:
-    manimpango.register_font(f"{config.snap_root}/static/NotoColorEmoji.ttf")
-elif config.is_flatpak:
-    manimpango.register_font(f"{config.flatpak_root}/static/NotoColorEmoji.ttf")
-else:
-    manimpango.register_font("static/NotoColorEmoji.ttf")
 
 settings = Gtk.Settings.get_default()
 
@@ -48,12 +43,25 @@ class EmoteApplication(Gtk.Application):
         if not user_data.load_shown_welcome():
             user_data.update_shown_welcome()
 
+        if config.is_flatpak:
+            self.flatpak_autostart()
         self.set_theme()
         print("After set theme")
 
         # https://docs.gtk.org/gtk4/migrating-3to4.html#stop-using-gtk_main-and-related-apis
         # Run the main gtk event loop - this prevents the app from quitting
         # Gtk.main()
+
+    def flatpak_autostart(self):
+        """Enable autostart in background for flatpak app"""
+        bus = dbus.SessionBus()
+        obj = bus.get_object("org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop")
+        inter = dbus.Interface(obj, "org.freedesktop.portal.Background")
+        res = inter.RequestBackground('', {
+            'reason': 'Emote autostart',
+            'autostart': True, 'background': True,
+            'commandline': dbus.Array(['emote'])
+        })
 
     def set_accelerator(self):
         """Register global shortcut for invoking the emoji picker"""

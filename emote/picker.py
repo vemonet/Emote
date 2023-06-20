@@ -162,14 +162,31 @@ class EmojiPicker(Gtk.ApplicationWindow):
         for skintone in user_data.SKINTONES:
             skintone_combo.append_text(skintone)
 
-        skintone_combo.set_active(user_data.SKINTONES.index(user_data.load_skintone()))
+        skintone_combo.set_active(user_data.load_skintone_index())
 
         return skintone_combo
 
     def on_skintone_combo_changed(self, combo):
-        skintone = combo.get_active_text()
-        if skintone is not None:
-            user_data.update_skintone(skintone)
+        char = combo.get_active_text()
+
+        skintone_index = None
+
+        if char == "✋":
+            skintone_index = 0
+        elif char == "✋🏻":
+            skintone_index = 1
+        elif char == "✋🏼":
+            skintone_index = 2
+        elif char == "✋🏽":
+            skintone_index = 3
+        elif char == "✋🏾":
+            skintone_index = 4
+        elif char == "✋🏿":
+            skintone_index = 5
+
+        if skintone_index is not None:
+            user_data.update_skintone_index(skintone_index)
+
             query = self.search_entry.props.text
             if query == "":
                 if hasattr(self, "selected_emoji_category"):
@@ -263,15 +280,18 @@ class EmojiPicker(Gtk.ApplicationWindow):
     def get_skintone_char(self, emoji):
         char = emoji["char"]
 
-        if not emoji["skintone"]:
+        if emoji["skintone"] is None:
             return char
 
-        skintone = user_data.load_skintone()
+        skintone = user_data.load_skintone_index()
 
-        if skintone == user_data.DEFAULT_SKINTONE:
+        if skintone == 0:
             return char
 
-        return char + skintone
+        try:
+            return emoji["skintone"][str(skintone)]["char"]
+        except Exception:
+            return char
 
     def show_emoji_preview(self, char):
         emoji = emojis.get_emoji_by_char(char)
@@ -365,8 +385,8 @@ class EmojiPicker(Gtk.ApplicationWindow):
             logo_icon_name='com.tomjwatson.Emote',
             program_name="Emote",
             title="About Emote",
-            version=os.environ.get("SNAP_VERSION", "dev build"),
-            authors=["Tom Watson"],
+            version=os.environ.get("FLATPAK_APP_VERSION", "dev build"),
+            authors=["Tom Watson", "Vincent Emonet"],
             artists=["Tom Watson, Matthew Wong"],
             documenters=["Irene Auñón"],
             copyright=f"© Tom Watson {datetime.now().year}",

@@ -547,6 +547,7 @@ class EmojiPicker(Gtk.ApplicationWindow):
         self.app_container.reorder_child_after(self.category_scrolled, self.categories_box)
 
 
+    # Main list of emojis is generated here
     def create_emoji_results(self, emojis, for_category=False):
         self.current_emojis = emojis
 
